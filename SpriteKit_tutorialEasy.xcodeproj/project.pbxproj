@@ -66,6 +66,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D640ACD61AF80C4900A6F6B0 /* Scene */ = {
+			isa = PBXGroup;
+			children = (
+				D6D2EA711AF7A90B00C1F31E /* GameScene.swift */,
+				D6D2EA991AF7D10600C1F31E /* GameOverScene.swift */,
+			);
+			name = Scene;
+			sourceTree = "<group>";
+		};
 		D6D2EA5F1AF7A90B00C1F31E = {
 			isa = PBXGroup;
 			children = (
@@ -89,12 +98,11 @@
 			children = (
 				D6D2EA911AF7AAF300C1F31E /* Resources */,
 				D6D2EA6D1AF7A90B00C1F31E /* AppDelegate.swift */,
-				D6D2EA711AF7A90B00C1F31E /* GameScene.swift */,
+				D640ACD61AF80C4900A6F6B0 /* Scene */,
 				D6D2EA731AF7A90B00C1F31E /* GameViewController.swift */,
 				D6D2EA751AF7A90B00C1F31E /* Main.storyboard */,
 				D6D2EA781AF7A90B00C1F31E /* Images.xcassets */,
 				D6D2EA7A1AF7A90B00C1F31E /* LaunchScreen.xib */,
-				D6D2EA991AF7D10600C1F31E /* GameOverScene.swift */,
 				D6D2EA6B1AF7A90B00C1F31E /* Supporting Files */,
 			);
 			path = SpriteKit_tutorialEasy;

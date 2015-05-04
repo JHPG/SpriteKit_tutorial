@@ -75,9 +75,10 @@ struct PhysicsCategory {
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var monstersDestroyed = 0
+    var enemiesLeft = 30
     
-    // 1
     let player = SKSpriteNode(imageNamed: "player")
+    let label = SKLabelNode(fontNamed: "Chalkduster")
     
     override func didMoveToView(view: SKView) {
         // 2
@@ -90,11 +91,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         runAction(SKAction.repeatActionForever(
             SKAction.sequence( [SKAction.runBlock(addMonster), SKAction.waitForDuration(1.0)] )
         ))
+        runAction(SKAction.repeatActionForever(
+            SKAction.sequence( [SKAction.runBlock(atualizarHUD), SKAction.waitForDuration(0.1)] )
+        ))
         
         physicsWorld.gravity = CGVectorMake(0, 0)
         physicsWorld.contactDelegate = self
         
         playBackgroundMusic("background-music-aac.caf")
+        
+        // HUD
+        label.fontSize = 16
+        label.fontColor = SKColor.blackColor()
+        label.position = CGPoint(x: size.width/5, y: size.height/20)
+        addChild(label)
+    }
+    
+    func atualizarHUD(){
+        label.text = " Inimigos restantes: \(enemiesLeft) "
     }
     
     func random() -> CGFloat {
@@ -131,7 +145,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let actualDuration = random(min: CGFloat(2.0), max: CGFloat(4.0))
         
         // Create the actions
-        let actionMove = SKAction.moveTo(CGPoint(x: -monster.size.width/2, y: actualY), duration: NSTimeInterval(actualDuration))
+        let actionMove = SKAction.moveTo (CGPoint(x: -monster.size.width/2, y: actualY), duration: NSTimeInterval(actualDuration))
         let actionMoveDone = SKAction.removeFromParent()
         
         let loseAction = SKAction.runBlock() {
@@ -191,10 +205,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         println("Hit")
         projectile.removeFromParent()
         monster.removeFromParent()
+        enemiesLeft--
         
         monstersDestroyed++
-        if (monstersDestroyed > 30) {
-            let reveal = SKTransition.flipHorizontalWithDuration(0.5)
+        if (monstersDestroyed >= 30) {
+            let reveal = SKTransition.flipHorizontalWithDuration(0.3)
             let gameOverScene = GameOverScene(size: self.size, won: true)
             self.view?.presentScene(gameOverScene, transition: reveal)
         }

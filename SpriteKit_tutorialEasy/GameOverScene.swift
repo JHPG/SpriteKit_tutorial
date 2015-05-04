@@ -19,7 +19,7 @@ class GameOverScene: SKScene {
         backgroundColor = SKColor.whiteColor()
         
         // 2
-        var message = won ? "You Won!" : "You Lose :["
+        var message = won ? "You Won! :]" : "You Lose :["
         
         // 3
         let label = SKLabelNode(fontNamed: "Chalkduster")
@@ -31,7 +31,7 @@ class GameOverScene: SKScene {
         
         // 4
         runAction(SKAction.sequence([
-        SKAction.waitForDuration(3.0),
+        SKAction.waitForDuration(1.3),  //Delay de tela
         SKAction.runBlock() {
         // 5
         let reveal = SKTransition.flipHorizontalWithDuration(0.5)
