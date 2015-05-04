@@ -17,6 +17,7 @@
 		D6D2EA961AF7AB0A00C1F31E /* background-music-aac.caf in Resources */ = {isa = PBXBuildFile; fileRef = D6D2EA931AF7AB0A00C1F31E /* background-music-aac.caf */; };
 		D6D2EA971AF7AB0A00C1F31E /* pew-pew-lei.caf in Resources */ = {isa = PBXBuildFile; fileRef = D6D2EA941AF7AB0A00C1F31E /* pew-pew-lei.caf */; };
 		D6D2EA981AF7AB0A00C1F31E /* sprites.atlas in Resources */ = {isa = PBXBuildFile; fileRef = D6D2EA951AF7AB0A00C1F31E /* sprites.atlas */; };
+		D6D2EA9A1AF7D10600C1F31E /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D2EA991AF7D10600C1F31E /* GameOverScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +45,7 @@
 		D6D2EA931AF7AB0A00C1F31E /* background-music-aac.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "background-music-aac.caf"; sourceTree = "<group>"; };
 		D6D2EA941AF7AB0A00C1F31E /* pew-pew-lei.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "pew-pew-lei.caf"; sourceTree = "<group>"; };
 		D6D2EA951AF7AB0A00C1F31E /* sprites.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = sprites.atlas; sourceTree = "<group>"; };
+		D6D2EA991AF7D10600C1F31E /* GameOverScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +94,7 @@
 				D6D2EA751AF7A90B00C1F31E /* Main.storyboard */,
 				D6D2EA781AF7A90B00C1F31E /* Images.xcassets */,
 				D6D2EA7A1AF7A90B00C1F31E /* LaunchScreen.xib */,
+				D6D2EA991AF7D10600C1F31E /* GameOverScene.swift */,
 				D6D2EA6B1AF7A90B00C1F31E /* Supporting Files */,
 			);
 			path = SpriteKit_tutorialEasy;
@@ -245,6 +248,7 @@
 			files = (
 				D6D2EA721AF7A90B00C1F31E /* GameScene.swift in Sources */,
 				D6D2EA741AF7A90B00C1F31E /* GameViewController.swift in Sources */,
+				D6D2EA9A1AF7D10600C1F31E /* GameOverScene.swift in Sources */,
 				D6D2EA6E1AF7A90B00C1F31E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -443,6 +447,7 @@
 				D6D2EA8D1AF7A90B00C1F31E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D6D2EA8E1AF7A90B00C1F31E /* Build configuration list for PBXNativeTarget "SpriteKit_tutorialEasyTests" */ = {
 			isa = XCConfigurationList;
@@ -451,6 +456,7 @@
 				D6D2EA901AF7A90B00C1F31E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

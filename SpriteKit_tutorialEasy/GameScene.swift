@@ -7,6 +7,31 @@
 //
 
 import SpriteKit
+import AVFoundation
+
+var backgroundMusicPlayer: AVAudioPlayer!
+
+func playBackgroundMusic(filename: String) {
+    let url = NSBundle.mainBundle().URLForResource(
+        filename, withExtension: nil)
+    if (url == nil) {
+        println("Could not find file: \(filename)")
+        return
+    }
+    
+    var error: NSError? = nil
+    backgroundMusicPlayer =
+        AVAudioPlayer(contentsOfURL: url, error: &error)
+    if backgroundMusicPlayer == nil {
+        println("Could not create audio player: \(error!)")
+        return
+    }
+    
+    backgroundMusicPlayer.numberOfLoops = -1
+    backgroundMusicPlayer.prepareToPlay()
+    backgroundMusicPlayer.play()
+}
+
 
 func + (left: CGPoint, right: CGPoint) -> CGPoint {
     return CGPoint(x: left.x + right.x, y: left.y + right.y)
@@ -40,8 +65,16 @@ extension CGPoint {
     }
 }
 
+struct PhysicsCategory {
+    static let None      : UInt32 = 0
+    static let All       : UInt32 = UInt32.max
+    static let Monster   : UInt32 = 0b1       // 1
+    static let Projectile: UInt32 = 0b10      // 2
+}
 
-class GameScene: SKScene {
+class GameScene: SKScene, SKPhysicsContactDelegate {
+    
+    var monstersDestroyed = 0
     
     // 1
     let player = SKSpriteNode(imageNamed: "player")
@@ -57,7 +90,11 @@ class GameScene: SKScene {
         runAction(SKAction.repeatActionForever(
             SKAction.sequence( [SKAction.runBlock(addMonster), SKAction.waitForDuration(1.0)] )
         ))
-
+        
+        physicsWorld.gravity = CGVectorMake(0, 0)
+        physicsWorld.contactDelegate = self
+        
+        playBackgroundMusic("background-music-aac.caf")
     }
     
     func random() -> CGFloat {
@@ -73,6 +110,13 @@ class GameScene: SKScene {
         /// Monster sprite
         let monster = SKSpriteNode(imageNamed: "monster")
         
+        // physicsBody
+        monster.physicsBody = SKPhysicsBody(rectangleOfSize: monster.size) // 1
+        monster.physicsBody?.dynamic = true // 2    // the physics engine will not control the movement of the monster
+        monster.physicsBody?.categoryBitMask = PhysicsCategory.Monster // 3
+        monster.physicsBody?.contactTestBitMask = PhysicsCategory.Projectile // 4
+        monster.physicsBody?.collisionBitMask = PhysicsCategory.None // 5
+
         /// Determine where to spawn the monster along the Y axis (random)
         let actualY = random(min: monster.size.height/2, max: size.height - monster.size.height/2)
         
@@ -89,10 +133,19 @@ class GameScene: SKScene {
         // Create the actions
         let actionMove = SKAction.moveTo(CGPoint(x: -monster.size.width/2, y: actualY), duration: NSTimeInterval(actualDuration))
         let actionMoveDone = SKAction.removeFromParent()
-        monster.runAction(SKAction.sequence([actionMove, actionMoveDone]))
+        
+        let loseAction = SKAction.runBlock() {
+            let reveal = SKTransition.flipHorizontalWithDuration(0.5)
+            let gameOverScene = GameOverScene(size: self.size, won: false)
+            self.view?.presentScene(gameOverScene, transition: reveal)
+        }
+        monster.runAction(SKAction.sequence([actionMove, loseAction, actionMoveDone]))
+
     }
     
     override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
+        
+        runAction(SKAction.playSoundFileNamed("pew-pew-lei.caf", waitForCompletion: false))
         
         // 1 - Choose one of the touches to work with
         let touch = touches.first as! UITouch
@@ -102,6 +155,13 @@ class GameScene: SKScene {
         // 2 - Set up initial location of projectile
         let projectile = SKSpriteNode(imageNamed: "projectile")
         projectile.position = player.position
+        
+        projectile.physicsBody = SKPhysicsBody(circleOfRadius: projectile.size.width/2)
+        projectile.physicsBody?.dynamic = true
+        projectile.physicsBody?.categoryBitMask = PhysicsCategory.Projectile
+        projectile.physicsBody?.contactTestBitMask = PhysicsCategory.Monster
+        projectile.physicsBody?.collisionBitMask = PhysicsCategory.None
+        projectile.physicsBody?.usesPreciseCollisionDetection = true
         
         // 3 - Determine offset of location to projectile
         let offset = touchLocation - projectile.position
@@ -127,6 +187,42 @@ class GameScene: SKScene {
         projectile.runAction(SKAction.sequence([actionMove, actionMoveDone]))
     }
 
+    func projectileDidCollideWithMonster(projectile:SKSpriteNode, monster:SKSpriteNode) {
+        println("Hit")
+        projectile.removeFromParent()
+        monster.removeFromParent()
+        
+        monstersDestroyed++
+        if (monstersDestroyed > 30) {
+            let reveal = SKTransition.flipHorizontalWithDuration(0.5)
+            let gameOverScene = GameOverScene(size: self.size, won: true)
+            self.view?.presentScene(gameOverScene, transition: reveal)
+        }
+
+    }
+
+    func didBeginContact(contact: SKPhysicsContact) {
+        
+        // 1
+        var firstBody: SKPhysicsBody
+        var secondBody: SKPhysicsBody
+        if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
+            firstBody = contact.bodyA
+            secondBody = contact.bodyB
+        } else {
+            firstBody = contact.bodyB
+            secondBody = contact.bodyA
+        }
+        
+        // 2
+        if ((firstBody.categoryBitMask & PhysicsCategory.Monster != 0) &&
+            (secondBody.categoryBitMask & PhysicsCategory.Projectile != 0)) {
+                projectileDidCollideWithMonster(firstBody.node as! SKSpriteNode, monster: secondBody.node as! SKSpriteNode)
+        }
+    }
+
+    
+    
 }
 
 
