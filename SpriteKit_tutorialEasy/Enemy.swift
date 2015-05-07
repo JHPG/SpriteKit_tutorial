@@ -15,6 +15,7 @@ class Enemy: SKSpriteNode {
         static let All       : UInt32 = UInt32.max
         static let Monster   : UInt32 = 0b1       // 1
         static let Projectile: UInt32 = 0b10      // 2
+        static let Player    : UInt32 = 0b100     // 3
     }
     
 //    let loseAction = SKAction.runBlock() {
@@ -23,8 +24,8 @@ class Enemy: SKSpriteNode {
 //        scene.view?.presentScene(gameOverScene, transition: reveal)
 //    }
     
-    convenience init() {
-        self.init(imageNamed: "monster")
+    convenience init(view: SKScene) {
+        self.init(imageNamed: "alien-spaceship")
         
         // physicsBody
         self.physicsBody = SKPhysicsBody(rectangleOfSize: self.size) // 1
@@ -34,14 +35,11 @@ class Enemy: SKSpriteNode {
         self.physicsBody?.collisionBitMask = PhysicsCategory.None // 5
         
         /// Determine where to spawn the self along the Y axis (random)
-        let actualY = random(min: self.size.height/2, max: size.height - self.size.height/2)
+        let actualY = random(min: self.size.height/2, max: view.size.height - self.size.height/2)
         
         // Position the self slightly off-screen along the right edge,
         // and along a random position along the Y axis as calculated above
-        self.position = CGPoint(x: size.width + self.size.width/2, y: actualY)
-        
-        // Add the self to the scene
-        //addChild(self)
+        self.position = CGPoint(x: view.size.width + self.size.width/2, y: actualY)
         
         /// Determine speed of the self
         let actualDuration = random(min: CGFloat(2.0), max: CGFloat(4.0))

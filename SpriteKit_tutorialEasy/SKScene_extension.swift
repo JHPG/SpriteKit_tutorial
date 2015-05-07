@@ -11,6 +11,7 @@ import AVFoundation
 import UIKit
 
 var backgroundMusicPlayer: AVAudioPlayer!
+var bg1, bg2: SKSpriteNode!
 
 extension SKScene: SKPhysicsContactDelegate {
     
@@ -35,10 +36,39 @@ extension SKScene: SKPhysicsContactDelegate {
         backgroundMusicPlayer.play()
     }
     
-    func addRunningBackground(filename: String){
-    
+    func addRunningBackground(filename1: String, filename2: String){
+        // create 2 background sprites
+        bg1 = SKSpriteNode(imageNamed: filename1)
+        bg1.anchorPoint = CGPointZero
+        bg1.position = CGPointMake(0, 0)
+        bg1.size = CGSize(width: self.size.width, height: self.size.height)
+        addChild(bg1)
+        
+        bg2 = SKSpriteNode(imageNamed: filename2)
+        bg2.anchorPoint = CGPointZero;
+        bg2.position = CGPointMake(bg1.size.width-1, 0);
+        bg2.size = CGSize(width: self.size.width, height: self.size.height)
+        self.addChild(bg2)
+        
+        runAction(SKAction.repeatActionForever(
+            SKAction.sequence( [ SKAction.runBlock {
+                self.updateBackground()
+                }, SKAction.waitForDuration(0.02)] )
+            ))
     }
     
+    func updateBackground() {
+        bg1.position = CGPointMake(bg1.position.x-4, bg1.position.y);
+        bg2.position = CGPointMake(bg2.position.x-4, bg2.position.y);
+        
+        if (bg1.position.x < -bg1.size.width){
+            bg1.position = CGPointMake(bg2.position.x + bg2.size.width, bg1.position.y);
+        }
+        
+        if (bg2.position.x < -bg2.size.width) {
+            bg2.position = CGPointMake(bg1.position.x + bg1.size.width, bg2.position.y);
+        }
+    }
     
 }
 

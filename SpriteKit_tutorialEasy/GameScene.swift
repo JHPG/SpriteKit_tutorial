@@ -10,53 +10,46 @@ import SpriteKit
 import AVFoundation
 
 // #MARK: Sem uso
-
-func + (left: CGPoint, right: CGPoint) -> CGPoint {
-    return CGPoint(x: left.x + right.x, y: left.y + right.y)
-}
-
-func - (left: CGPoint, right: CGPoint) -> CGPoint {
-    return CGPoint(x: left.x - right.x, y: left.y - right.y)
-}
-
-func * (point: CGPoint, scalar: CGFloat) -> CGPoint {
-    return CGPoint(x: point.x * scalar, y: point.y * scalar)
-}
-
-func / (point: CGPoint, scalar: CGFloat) -> CGPoint {
-    return CGPoint(x: point.x / scalar, y: point.y / scalar)
-}
-
-#if !(arch(x86_64) || arch(arm64))
-    func sqrt(a: CGFloat) -> CGFloat {
-    return CGFloat(sqrtf(Float(a)))
-    }
-#endif
-
-extension CGPoint {
-    func length() -> CGFloat {
-        return sqrt(x*x + y*y)  //Hipotenusa
-    }
-    
-    func normalized() -> CGPoint {
-        return self / length()
-    }
-}
+//
+//func + (left: CGPoint, right: CGPoint) -> CGPoint {
+//    return CGPoint(x: left.x + right.x, y: left.y + right.y)
+//}
+//
+//func - (left: CGPoint, right: CGPoint) -> CGPoint {
+//    return CGPoint(x: left.x - right.x, y: left.y - right.y)
+//}
+//
+//func * (point: CGPoint, scalar: CGFloat) -> CGPoint {
+//    return CGPoint(x: point.x * scalar, y: point.y * scalar)
+//}
+//
+//func / (point: CGPoint, scalar: CGFloat) -> CGPoint {
+//    return CGPoint(x: point.x / scalar, y: point.y / scalar)
+//}
+//
+//#if !(arch(x86_64) || arch(arm64))
+//    func sqrt(a: CGFloat) -> CGFloat {
+//    return CGFloat(sqrtf(Float(a)))
+//    }
+//#endif
+//
+//extension CGPoint {
+//    func length() -> CGFloat {
+//        return sqrt(x*x + y*y)  //Hipotenusa
+//    }
+//    
+//    func normalized() -> CGPoint {
+//        return self / length()
+//    }
+//}
 
 struct PhysicsCategory {
     static let None      : UInt32 = 0
     static let All       : UInt32 = UInt32.max
     static let Monster   : UInt32 = 0b1       // 1
     static let Projectile: UInt32 = 0b10      // 2
+    static let Player    : UInt32 = 0b100     // 3
 }
-
-
-
-
-
-
-
-
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
@@ -64,29 +57,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var enemiesLeft = 30
     
     //let player = SKSpriteNode(imageNamed: "player")
-    let player = Player()
+    var player: Player!
     
     let label = SKLabelNode(fontNamed: "Chalkduster")
     var isFingerOnPlayer = false
     
     //#MARK: Funções padrão
     override func didMoveToView(view: SKView) {
-        backgroundColor = SKColor.whiteColor()
         
+        backgroundColor = SKColor.whiteColor()
+        addRunningBackground("space", filename2: "space")
+        
+        player = Player(view: self)
         player.position = CGPoint(x: size.width * 0.1, y: size.height * 0.5)
         addChild(player)
         
         criarHUD()
         
-        let enemy = Enemy()
         runAction(SKAction.repeatActionForever(
-            SKAction.sequence( [ SKAction.runBlock(addChild(enemy)), SKAction.waitForDuration(1.0)] )
+            SKAction.sequence( [ SKAction.runBlock {
+                self.addChild(Enemy(view: self))
+            }, SKAction.waitForDuration(1.0)] )
         ))
         
         physicsWorld.gravity = CGVectorMake(0, 0)
         physicsWorld.contactDelegate = self
         
-        //playBackgroundMusic("background-music-aac.caf")
+        playBackgroundMusic("bg_sound1.mp3")
     }
     
     override func update(currentTime: NSTimeInterval) {
@@ -97,7 +94,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func criarHUD(){
         label.fontSize = 16
-        label.fontColor = SKColor.blackColor()
+        label.fontColor = SKColor.whiteColor()
         label.position = CGPoint(x: size.width/5, y: size.height/20)
         addChild(label)
     }
@@ -236,8 +233,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         // 1 - Choose one of the touches to work with
         let touch = touches.first as! UITouch
-        
-        
         
         isFingerOnPlayer = false
     }
