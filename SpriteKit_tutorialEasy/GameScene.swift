@@ -195,6 +195,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         actionWithElement(touches, name: "player") {
             self.isFingerOnPlayer = true
         }
+        
+        self.shoot(touches.first as! UITouch)
+        
     }
     
     override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
@@ -222,12 +225,36 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
         
-        runAction(SKAction.playSoundFileNamed("pew-pew-lei.caf", waitForCompletion: false))
-        
         // 1 - Choose one of the touches to work with
         let touch = touches.first as! UITouch
-        /// let you find the coordinate of a touch within a SKNode’s coordinate system
-        let touchLocation = touch.locationInNode(self)
+        
+        
+        
+        isFingerOnPlayer = false
+    }
+    
+    // #MARK: Custom functions
+    
+    /// Reduz o código para identificar um toque em um elemento
+    func actionWithElement(touches: Set<NSObject>, name: String, function: ()->() ) {
+        
+        for  obj in touches {
+            let touch = obj as! UITouch
+            //var touch = touches.first as! UITouch
+            var touchLocation = touch.locationInNode(self)
+            var touchedNode = self.nodeAtPoint(touchLocation)
+            
+            if touchedNode.name == name {
+                if let mainView = view {
+                    function()
+                }
+            }
+        }
+    }
+    
+    func shoot(touch: UITouch){
+        
+        runAction(SKAction.playSoundFileNamed("pew-pew-lei.caf", waitForCompletion: false))
         
         // 2 - Set up initial location of projectile
         let projectile = SKSpriteNode(imageNamed: "projectile")
@@ -241,6 +268,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         projectile.physicsBody?.usesPreciseCollisionDetection = true
         
         // 3 - Determine offset of location to projectile
+        var touchLocation = touch.locationInNode(self)
+        var previousLocation = touch.previousLocationInNode(self)
+        
         let offset = touchLocation - projectile.position
         
         // 4 - Bail out if you are shooting down or backwards
@@ -262,25 +292,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let actionMove = SKAction.moveTo(realDest, duration: 2.0)
         let actionMoveDone = SKAction.removeFromParent()
         projectile.runAction(SKAction.sequence([actionMove, actionMoveDone]))
-        
-        isFingerOnPlayer = false
     }
     
-    // #MARK: Custom functions
     
-    /// Reduz o código para identificar um toque em um elemento
-    func actionWithElement(touches: Set<NSObject>, name: String, function: ()->() ) {
-        
-        var touch = touches.first as! UITouch
-        var touchLocation = touch.locationInNode(self)
-        var touchedNode = self.nodeAtPoint(touchLocation)
-        
-        if touchedNode.name == name {
-            if let mainView = view {
-                function()
-            }
-        }
-    }
+    
 }
 
 

@@ -35,6 +35,11 @@ extension SKScene: SKPhysicsContactDelegate {
         backgroundMusicPlayer.play()
     }
     
+    func addRunningBackground(filename: String){
+    
+    }
+    
+    
 }
 
 
