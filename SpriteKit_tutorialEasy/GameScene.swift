@@ -9,29 +9,7 @@
 import SpriteKit
 import AVFoundation
 
-var backgroundMusicPlayer: AVAudioPlayer!
-
-func playBackgroundMusic(filename: String) {
-    let url = NSBundle.mainBundle().URLForResource(
-        filename, withExtension: nil)
-    if (url == nil) {
-        println("Could not find file: \(filename)")
-        return
-    }
-    
-    var error: NSError? = nil
-    backgroundMusicPlayer =
-        AVAudioPlayer(contentsOfURL: url, error: &error)
-    if backgroundMusicPlayer == nil {
-        println("Could not create audio player: \(error!)")
-        return
-    }
-    
-    backgroundMusicPlayer.numberOfLoops = -1
-    backgroundMusicPlayer.prepareToPlay()
-    backgroundMusicPlayer.play()
-}
-
+// #MARK: Sem uso
 
 func + (left: CGPoint, right: CGPoint) -> CGPoint {
     return CGPoint(x: left.x + right.x, y: left.y + right.y)
@@ -72,6 +50,14 @@ struct PhysicsCategory {
     static let Projectile: UInt32 = 0b10      // 2
 }
 
+
+
+
+
+
+
+
+
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var monstersDestroyed = 0
@@ -79,28 +65,32 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     let player = SKSpriteNode(imageNamed: "player")
     let label = SKLabelNode(fontNamed: "Chalkduster")
+    var isFingerOnPlayer = false
     
+    //#MARK: Funções padrão
     override func didMoveToView(view: SKView) {
-        // 2
         backgroundColor = SKColor.whiteColor()
-        // 3
-        player.position = CGPoint(x: size.width * 0.1, y: size.height * 0.5)
-        // 4
-        addChild(player)
+        
+        addPlayer()
+        criarHUD()
         
         runAction(SKAction.repeatActionForever(
             SKAction.sequence( [SKAction.runBlock(addMonster), SKAction.waitForDuration(1.0)] )
-        ))
-        runAction(SKAction.repeatActionForever(
-            SKAction.sequence( [SKAction.runBlock(atualizarHUD), SKAction.waitForDuration(0.1)] )
         ))
         
         physicsWorld.gravity = CGVectorMake(0, 0)
         physicsWorld.contactDelegate = self
         
         playBackgroundMusic("background-music-aac.caf")
-        
-        // HUD
+    }
+    
+    override func update(currentTime: NSTimeInterval) {
+        atualizarHUD()
+    }
+    
+    // #MARK: Criar elementos de cena
+    
+    func criarHUD(){
         label.fontSize = 16
         label.fontColor = SKColor.blackColor()
         label.position = CGPoint(x: size.width/5, y: size.height/20)
@@ -111,17 +101,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         label.text = " Inimigos restantes: \(enemiesLeft) "
     }
     
-    func random() -> CGFloat {
-        return CGFloat(Float(arc4random()) / 0xFFFFFFFF)
-    }
-    
-    func random(#min: CGFloat, max: CGFloat) -> CGFloat {
-        return random() * (max - min) + min
+    func addPlayer(){
+        player.name = "player"
+        player.position = CGPoint(x: size.width * 0.1, y: size.height * 0.5)
+        addChild(player)
     }
     
     func addMonster() {
         
-        /// Monster sprite
         let monster = SKSpriteNode(imageNamed: "monster")
         
         // physicsBody
@@ -154,7 +141,83 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.view?.presentScene(gameOverScene, transition: reveal)
         }
         monster.runAction(SKAction.sequence([actionMove, loseAction, actionMoveDone]))
+    }
+    
+    
+    // #MARK: Colision functions
+    func projectileDidCollideWithMonster(projectile:SKSpriteNode, monster:SKSpriteNode) {
+        println("Hit")
+        projectile.removeFromParent()
+        monster.removeFromParent()
+        enemiesLeft--
+        
+        monstersDestroyed++
+        if (monstersDestroyed >= 30) {
+            let reveal = SKTransition.flipHorizontalWithDuration(0.3)
+            let gameOverScene = GameOverScene(size: self.size, won: true)
+            self.view?.presentScene(gameOverScene, transition: reveal)
+        }
 
+    }
+    
+    func didBeginContact(contact: SKPhysicsContact) {
+        
+        var firstBody: SKPhysicsBody
+        var secondBody: SKPhysicsBody
+        if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
+            firstBody = contact.bodyA
+            secondBody = contact.bodyB
+        } else {
+            firstBody = contact.bodyB
+            secondBody = contact.bodyA
+        }
+        
+        if ((firstBody.categoryBitMask & PhysicsCategory.Monster != 0) &&
+            (secondBody.categoryBitMask & PhysicsCategory.Projectile != 0)) {
+                projectileDidCollideWithMonster(firstBody.node as! SKSpriteNode, monster: secondBody.node as! SKSpriteNode)
+        }
+    }
+    
+    //#MARK: Random functions
+
+    func random() -> CGFloat {
+        return CGFloat(Float(arc4random()) / 0xFFFFFFFF)
+    }
+    
+    func random(#min: CGFloat, max: CGFloat) -> CGFloat {
+        return random() * (max - min) + min
+    }
+    
+    // #MARK: Touch
+    
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+        
+        actionWithElement(touches, name: "player") {
+            self.isFingerOnPlayer = true
+        }
+    }
+    
+    override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
+        
+        if isFingerOnPlayer {
+            // 2. Get touch location
+            var touch = touches.first as! UITouch
+            var touchLocation = touch.locationInNode(self)
+            var previousLocation = touch.previousLocationInNode(self)
+            
+            // 3. Get node for player
+            var player = childNodeWithName("player") as! SKSpriteNode
+            
+            // 4. Calculate new position along x for paddle
+            var playerY = player.position.y + (touchLocation.y - previousLocation.y)
+            
+            // 5. Limit x so that paddle won't leave screen to left or right
+            playerY = max(player.size.width/2, playerY)
+            playerY = min(size.width - player.size.width/2, playerY)
+            
+            // 6. Update player position
+            player.position = CGPointMake(player.position.x, playerY)
+        }
     }
     
     override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
@@ -199,45 +262,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let actionMove = SKAction.moveTo(realDest, duration: 2.0)
         let actionMoveDone = SKAction.removeFromParent()
         projectile.runAction(SKAction.sequence([actionMove, actionMoveDone]))
-    }
-
-    func projectileDidCollideWithMonster(projectile:SKSpriteNode, monster:SKSpriteNode) {
-        println("Hit")
-        projectile.removeFromParent()
-        monster.removeFromParent()
-        enemiesLeft--
         
-        monstersDestroyed++
-        if (monstersDestroyed >= 30) {
-            let reveal = SKTransition.flipHorizontalWithDuration(0.3)
-            let gameOverScene = GameOverScene(size: self.size, won: true)
-            self.view?.presentScene(gameOverScene, transition: reveal)
-        }
-
+        isFingerOnPlayer = false
     }
-
-    func didBeginContact(contact: SKPhysicsContact) {
-        
-        // 1
-        var firstBody: SKPhysicsBody
-        var secondBody: SKPhysicsBody
-        if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
-            firstBody = contact.bodyA
-            secondBody = contact.bodyB
-        } else {
-            firstBody = contact.bodyB
-            secondBody = contact.bodyA
-        }
-        
-        // 2
-        if ((firstBody.categoryBitMask & PhysicsCategory.Monster != 0) &&
-            (secondBody.categoryBitMask & PhysicsCategory.Projectile != 0)) {
-                projectileDidCollideWithMonster(firstBody.node as! SKSpriteNode, monster: secondBody.node as! SKSpriteNode)
-        }
-    }
-
     
+    // #MARK: Custom functions
     
+    /// Reduz o código para identificar um toque em um elemento
+    func actionWithElement(touches: Set<NSObject>, name: String, function: ()->() ) {
+        
+        var touch = touches.first as! UITouch
+        var touchLocation = touch.locationInNode(self)
+        var touchedNode = self.nodeAtPoint(touchLocation)
+        
+        if touchedNode.name == name {
+            if let mainView = view {
+                function()
+            }
+        }
+    }
 }
 
 
