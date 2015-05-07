@@ -72,6 +72,7 @@ class Player: SKSpriteNode {
         self.physicsBody?.categoryBitMask = PhysicsCategory.Player // 3
         self.physicsBody?.contactTestBitMask = PhysicsCategory.Monster // 4
         self.physicsBody?.collisionBitMask = PhysicsCategory.None // 5
+        self.physicsBody?.usesPreciseCollisionDetection = true
     }
 
     func shoot(touch: UITouch){

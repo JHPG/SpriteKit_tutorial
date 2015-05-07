@@ -19,14 +19,10 @@ struct PhysicsCategory {
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
-    var monstersDestroyed = 0
-    var enemiesLeft = 30
-    
-    //let player = SKSpriteNode(imageNamed: "player")
     var player: Player!
-    
-    let label = SKLabelNode(fontNamed: "Chalkduster")
+    var hud: HUD!
     var isFingerOnPlayer = false
+    var monstersDestroyed = 0
     
     //#MARK: Funções padrão
     override func didMoveToView(view: SKView) {
@@ -35,10 +31,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addRunningBackground("space", filename2: "space")
         
         player = Player(view: self)
+        
+        /// Criar hud
+        hud = HUD(view: self)
+        
         player.position = CGPoint(x: size.width * 0.1, y: size.height * 0.5)
         addChild(player)
-        
-        criarHUD()
         
         runAction(SKAction.repeatActionForever(
             SKAction.sequence( [ SKAction.runBlock {
@@ -53,20 +51,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func update(currentTime: NSTimeInterval) {
-        atualizarHUD()
-    }
-    
-    // #MARK: Criar elementos de cena
-    
-    func criarHUD(){
-        label.fontSize = 16
-        label.fontColor = SKColor.whiteColor()
-        label.position = CGPoint(x: size.width/5, y: size.height/20)
-        addChild(label)
-    }
-    
-    func atualizarHUD(){
-        label.text = " Inimigos restantes: \(enemiesLeft) "
+        hud.atualizarHUD()
     }
     
     // #MARK: Colision functions
@@ -93,7 +78,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         print("Hit - ")
         projectile.removeFromParent()
         monster.removeFromParent()
-        enemiesLeft--
+        hud.enemiesLeft--
         
         monstersDestroyed++
         if (monstersDestroyed >= 30) {
