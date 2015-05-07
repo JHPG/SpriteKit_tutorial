@@ -45,6 +45,7 @@ import SpriteKit
 class Player: SKSpriteNode {
     
     var parentView: SKScene?
+    var shootAvaliable = true
     
     struct PhysicsCategory {
         static let None      : UInt32 = 0
@@ -75,48 +76,33 @@ class Player: SKSpriteNode {
 
     func shoot(touch: UITouch){
         
+        if shootAvaliable {
         // Set up initial location of projectile
-        let projectile = SKSpriteNode(imageNamed: "projectile")
-        projectile.position = self.position
-        
-        projectile.physicsBody = SKPhysicsBody(circleOfRadius: projectile.size.width/2)
-        projectile.physicsBody?.dynamic = true
-        projectile.physicsBody?.categoryBitMask = PhysicsCategory.Projectile
-        projectile.physicsBody?.contactTestBitMask = PhysicsCategory.Monster
-        projectile.physicsBody?.collisionBitMask = PhysicsCategory.None
-        projectile.physicsBody?.usesPreciseCollisionDetection = true
-        
-        // Determine offset of location to projectile
-//        var touchLocation = touch.locationInNode(self)
-//        var previousLocation = touch.previousLocationInNode(self)
-//        let offset = touchLocation.x - projectile.position.x
-        
-        // Bail out if you are shooting down or backwards
-//        if (offset < 0) {
-//            return
-//        } else {
-//            runAction(SKAction.playSoundFileNamed("laser.mp3", waitForCompletion: false))
-//        }
-        
-        // 5 - OK to add now - you've double checked position
-        parentView!.addChild(projectile)
-        
-        // 6 - Get the direction of where to shoot
-        //let direction = offset.normalized()     //Convert the offset into a unit vector
-        
-        // 7 - Make it shoot far enough to be guaranteed off screen
-        //let shootAmount = direction * 1000
-        let shootAmount = parentView!.size.width //* 1000
-        
-        // 8 - Add the shoot amount to the current position
-        //let realDest = shootAmount + projectile.position
-        let realDest = CGPoint(x: self.size.width + shootAmount, y: self.position.x)
-        
-        // 9 - Create the actions
-        //let actionMove = SKAction.moveTo(realDest, duration: 2.0)
-        let actionMove = SKAction.moveTo(realDest, duration: 2.0)
-        let actionMoveDone = SKAction.removeFromParent()
-        projectile.runAction(SKAction.sequence([actionMove, actionMoveDone]))
+            let projectile = SKSpriteNode(imageNamed: "projectile")
+            projectile.position = self.position
+            
+            projectile.physicsBody = SKPhysicsBody(circleOfRadius: projectile.size.width/2)
+            projectile.physicsBody?.dynamic = true
+            projectile.physicsBody?.categoryBitMask = PhysicsCategory.Projectile
+            projectile.physicsBody?.contactTestBitMask = PhysicsCategory.Monster
+            projectile.physicsBody?.collisionBitMask = PhysicsCategory.None
+            projectile.physicsBody?.usesPreciseCollisionDetection = true
+            
+            /// OK to add now - you've double checked position
+            parentView!.addChild(projectile)
+            
+            /// Make it shoot far enough to be guaranteed off screen
+            let shootAmount = parentView!.size.width
+            
+            /// Add the shoot amount to the current position
+            let realDest = CGPoint(x: self.size.width + shootAmount, y: self.position.y)
+            
+            /// Create the actions
+            let actionMove = SKAction.moveTo(realDest, duration: 2.0)
+            let actionMoveDone = SKAction.removeFromParent()
+            projectile.runAction(SKAction.sequence([actionMove, actionMoveDone]))
+            
+        }
     }
 
     
