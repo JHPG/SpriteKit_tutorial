@@ -52,6 +52,8 @@ class Enemy: SKSpriteNode {
         //self.runAction(SKAction.sequence([actionMove, loseAction, actionMoveDone]))
         self.runAction(SKAction.sequence([actionMove, actionMoveDone]))
     }
+    
+
 
     //#MARK: Random functions
     
@@ -62,4 +64,7 @@ class Enemy: SKSpriteNode {
     func random(#min: CGFloat, max: CGFloat) -> CGFloat {
         return random() * (max - min) + min
     }
+    
+    
+    
 }

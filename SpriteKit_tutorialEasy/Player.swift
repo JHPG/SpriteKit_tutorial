@@ -79,8 +79,11 @@ class Player: SKSpriteNode {
         
         if shootAvaliable {
         // Set up initial location of projectile
-            let projectile = SKSpriteNode(imageNamed: "projectile")
+            let projectile = SKSpriteNode(imageNamed: "laser")
             projectile.position = self.position
+            projectile.position.x = self.position.x + self.size.width
+            
+            runAction(SKAction.playSoundFileNamed("laser.mp3", waitForCompletion: false))
             
             projectile.physicsBody = SKPhysicsBody(circleOfRadius: projectile.size.width/2)
             projectile.physicsBody?.dynamic = true

@@ -23,6 +23,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var hud: HUD!
     var isFingerOnPlayer = false
     var monstersDestroyed = 0
+    let singleton = Singleton.sharedInstance
     
     //#MARK: Funções padrão
     override func didMoveToView(view: SKView) {
@@ -70,29 +71,50 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if ((firstBody.categoryBitMask & PhysicsCategory.Monster != 0) &&
             (secondBody.categoryBitMask & PhysicsCategory.Projectile != 0)) {
-                projectileDidCollideWithMonster(firstBody.node as! SKSpriteNode, monster: secondBody.node as! SKSpriteNode)
+                
+                enemyDie(firstBody.node as! SKSpriteNode, monster: secondBody.node as! SKSpriteNode)
+                
         } else if ((firstBody.categoryBitMask & PhysicsCategory.Monster != 0) &&
             (secondBody.categoryBitMask & PhysicsCategory.Player != 0)) {
-                let reveal = SKTransition.flipHorizontalWithDuration(0.3)
-                let gameOverScene = GameOverScene(size: self.size, won: false)
-                self.view?.presentScene(gameOverScene, transition: reveal)
+            let reveal = SKTransition.flipHorizontalWithDuration(0.3)
+            let gameOverScene = GameOverScene(size: self.size, won: false)
+            self.view?.presentScene(gameOverScene, transition: reveal)
         }
     }
     
-    func projectileDidCollideWithMonster(projectile:SKSpriteNode, monster:SKSpriteNode) {
-        print("Hit - ")
+    func enemyDie(projectile:SKSpriteNode, monster:SKSpriteNode) {
+        
+        runAction(SKAction.playSoundFileNamed("explosion.mp3", waitForCompletion: false))
+        
         projectile.removeFromParent()
+        
+        let explosion:SKSpriteNode = SKSpriteNode(imageNamed: "explosion")
+        explosion.name = "explosion"
+        explosion.position = monster.position
+//        addChild(explosion)
+//        SKAction.waitForDuration(0.5)
+//        explosion.removeFromParent()
+
+        let explosionAction = SKAction.sequence( [
+            SKAction.runBlock { self.addChild(explosion) },
+            SKAction.waitForDuration(0.2),
+            SKAction.runBlock { explosion.removeFromParent() }
+        ] )
+        runAction(explosionAction)
+        
         monster.removeFromParent()
         hud.enemiesLeft--
-        
         monstersDestroyed++
-        if (monstersDestroyed >= 30) {
+
+        if (monstersDestroyed >= hud.enemiesLeft) {
+            singleton.level++
             let reveal = SKTransition.flipHorizontalWithDuration(0.3)
-            let gameOverScene = GameOverScene(size: self.size, won: true)
+            let gameOverScene = GameOverScene (size: self.size, won: true)
             self.view?.presentScene(gameOverScene, transition: reveal)
         }
-
     }
+    
+    
     
     // #MARK: Touch
     
@@ -100,6 +122,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //        actionWithElement(touches, name: "player") {
 //            self.isFingerOnPlayer = true
 //        }
+        
+        /* TESTE pra saber se passa de level (singleton funciona)
+            let reveal = SKTransition.flipHorizontalWithDuration(0.3)
+            let gameOverScene = GameOverScene(size: self.size, won: false)
+            self.view?.presentScene(gameOverScene, transition: reveal)
+            singleton.level++
+        */
         
         player.shoot(touches.first as! UITouch)
     }

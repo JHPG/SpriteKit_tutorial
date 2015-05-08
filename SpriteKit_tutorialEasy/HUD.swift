@@ -9,6 +9,8 @@
 import UIKit
 import SpriteKit
 
+private let _singletonManager = HUD()
+
 class HUD: NSObject {
     
 //    var enemiesLeft:Int {
@@ -18,8 +20,9 @@ class HUD: NSObject {
 //            atualizarHUD()
 //        }
 //    }
-    var enemiesLeft = 30
-    var level = 1
+    
+    var enemiesLeft = 10    //Simbólico, n vale isso
+    let singleton = Singleton.sharedInstance
     
     var parentView: SKScene!
     
@@ -27,12 +30,10 @@ class HUD: NSObject {
     var lifeLabel = SKLabelNode(fontNamed: "Chalkduster")
     var levelLabel = SKLabelNode(fontNamed: "Chalkduster")
     
-    
     convenience init(view: SKScene){
         self.init()
-        parentView = view
-        //enemiesLeft = 30
         
+        parentView = view
         
         enemiesLabel.fontSize = 16
         enemiesLabel.fontColor = SKColor.whiteColor()
@@ -43,12 +44,14 @@ class HUD: NSObject {
         levelLabel.fontColor = SKColor.whiteColor()
         levelLabel.position = CGPoint(x: view.size.width/10, y: view.size.height-40)
         parentView.addChild(levelLabel)
+        
+        enemiesLeft = singleton.level * 10      //Adaptar depois (nível de dificuldadeßß)
     }
     
     
     func atualizarHUD(){
         enemiesLabel.text = " Inimigos restantes: \(enemiesLeft) "
-        levelLabel.text = " Level \(level) "
+        levelLabel.text = " Level \(singleton.level) "
     }
     
 }
