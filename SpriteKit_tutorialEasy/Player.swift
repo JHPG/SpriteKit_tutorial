@@ -63,11 +63,8 @@ class Player: SKSpriteNode {
         self.position = CGPoint(x: view.size.width * 0.1, y: view.size.height * 0.5)      //errado
         parentView = view
         
-        self.physicsBody = SKPhysicsBody(rectangleOfSize: self.size)
-        self.physicsBody?.dynamic = false
-        
         // physicsBody
-        self.physicsBody = SKPhysicsBody(rectangleOfSize: self.size) // 1
+        self.physicsBody = SKPhysicsBody(circleOfRadius: self.size.width/2) // 1
         self.physicsBody?.dynamic = false // 2    // the physics engine will not control the movement of the self
         self.physicsBody?.categoryBitMask = PhysicsCategory.Player // 3
         self.physicsBody?.contactTestBitMask = PhysicsCategory.Monster // 4
@@ -85,7 +82,7 @@ class Player: SKSpriteNode {
             
             runAction(SKAction.playSoundFileNamed("laser.mp3", waitForCompletion: false))
             
-            projectile.physicsBody = SKPhysicsBody(circleOfRadius: projectile.size.width/2)
+            projectile.physicsBody = SKPhysicsBody(rectangleOfSize: projectile.size)
             projectile.physicsBody?.dynamic = true
             projectile.physicsBody?.categoryBitMask = PhysicsCategory.Projectile
             projectile.physicsBody?.contactTestBitMask = PhysicsCategory.Monster
