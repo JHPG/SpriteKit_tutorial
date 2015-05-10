@@ -8,40 +8,6 @@
 
 import SpriteKit
 
-// #MARK: Sem uso
-
-//func + (left: CGPoint, right: CGPoint) -> CGPoint {
-//    return CGPoint(x: left.x + right.x, y: left.y + right.y)
-//}
-//
-//func - (left: CGPoint, right: CGPoint) -> CGPoint {
-//    return CGPoint(x: left.x - right.x, y: left.y - right.y)
-//}
-//
-//func * (point: CGPoint, scalar: CGFloat) -> CGPoint {
-//    return CGPoint(x: point.x * scalar, y: point.y * scalar)
-//}
-//
-//func / (point: CGPoint, scalar: CGFloat) -> CGPoint {
-//    return CGPoint(x: point.x / scalar, y: point.y / scalar)
-//}
-//
-//#if !(arch(x86_64) || arch(arm64))
-//    func sqrt(a: CGFloat) -> CGFloat {
-//    return CGFloat(sqrtf(Float(a)))
-//    }
-//#endif
-//
-//extension CGPoint {
-//    func length() -> CGFloat {
-//        return sqrt(x*x + y*y)  //Hipotenusa
-//    }
-//    
-//    func normalized() -> CGPoint {
-//        return self / length()
-//    }
-//}
-
 class Player: SKSpriteNode {
     
     var parentView: SKScene?
@@ -82,7 +48,7 @@ class Player: SKSpriteNode {
         // Set up initial location of projectile
             let projectile = SKSpriteNode(imageNamed: "laser")
             projectile.position = self.position
-            projectile.position.x = self.position.x + self.size.width
+            projectile.position.x = self.position.x + self.size.width-12
             
             runAction(SKAction.playSoundFileNamed("laser.mp3", waitForCompletion: false))
             
