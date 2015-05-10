@@ -10,6 +10,8 @@
 		D615FBD11AFCD80700CB208C /* explosion.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D615FBD01AFCD80700CB208C /* explosion.mp3 */; };
 		D615FBD31AFCFA2700CB208C /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D615FBD21AFCFA2700CB208C /* GameKit.framework */; };
 		D615FBD51AFCFAC900CB208C /* GameCenterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D615FBD41AFCFAC900CB208C /* GameCenterManager.swift */; };
+		D625ED7F1AFEDE0B00E9F40C /* Menu.sks in Resources */ = {isa = PBXBuildFile; fileRef = D625ED7E1AFEDE0B00E9F40C /* Menu.sks */; };
+		D625EDB31AFEEEE800E9F40C /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D625EDB21AFEEEE800E9F40C /* Menu.swift */; };
 		D63F43411AFB8A20000885E7 /* SKScene_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63F43401AFB8A20000885E7 /* SKScene_extension.swift */; };
 		D63F43451AFBA538000885E7 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63F43441AFBA538000885E7 /* Player.swift */; };
 		D63F43471AFBAC8C000885E7 /* laser.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D63F43461AFBAC8C000885E7 /* laser.mp3 */; };
@@ -51,6 +53,8 @@
 		D615FBD01AFCD80700CB208C /* explosion.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = explosion.mp3; sourceTree = "<group>"; };
 		D615FBD21AFCFA2700CB208C /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		D615FBD41AFCFAC900CB208C /* GameCenterManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameCenterManager.swift; sourceTree = "<group>"; };
+		D625ED7E1AFEDE0B00E9F40C /* Menu.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Menu.sks; sourceTree = "<group>"; };
+		D625EDB21AFEEEE800E9F40C /* Menu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Menu.swift; path = Scenes/Menu.swift; sourceTree = "<group>"; };
 		D63F43401AFB8A20000885E7 /* SKScene_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKScene_extension.swift; sourceTree = "<group>"; };
 		D63F43421AFBA427000885E7 /* Testes.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = Testes.playground; path = ../Testes.playground; sourceTree = "<group>"; };
 		D63F43441AFBA538000885E7 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
@@ -129,6 +133,8 @@
 		D640ACD61AF80C4900A6F6B0 /* Scene */ = {
 			isa = PBXGroup;
 			children = (
+				D625ED7E1AFEDE0B00E9F40C /* Menu.sks */,
+				D625EDB21AFEEEE800E9F40C /* Menu.swift */,
 				D6D2EA711AF7A90B00C1F31E /* GameScene.swift */,
 				D6D2EA991AF7D10600C1F31E /* GameOverScene.swift */,
 			);
@@ -329,6 +335,7 @@
 				D63F435C1AFC3371000885E7 /* laser.png in Resources */,
 				D63F43511AFBEA68000885E7 /* rocket.png in Resources */,
 				D6869D391AFECEB300F4C3B9 /* exhaust.sks in Resources */,
+				D625ED7F1AFEDE0B00E9F40C /* Menu.sks in Resources */,
 				D6869D331AFEC96600F4C3B9 /* spark.png in Resources */,
 				D63F43521AFBEA68000885E7 /* alien-spaceship.png in Resources */,
 				D6D2EA771AF7A90B00C1F31E /* Main.storyboard in Resources */,
@@ -354,6 +361,7 @@
 				D6D2EA741AF7A90B00C1F31E /* GameViewController.swift in Sources */,
 				D6D2EA9A1AF7D10600C1F31E /* GameOverScene.swift in Sources */,
 				D63F43411AFB8A20000885E7 /* SKScene_extension.swift in Sources */,
+				D625EDB31AFEEEE800E9F40C /* Menu.swift in Sources */,
 				D63F43451AFBA538000885E7 /* Player.swift in Sources */,
 				D63F43581AFC1778000885E7 /* HUD.swift in Sources */,
 				D6D2EA6E1AF7A90B00C1F31E /* AppDelegate.swift in Sources */,

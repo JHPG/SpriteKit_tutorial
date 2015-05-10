@@ -70,6 +70,27 @@ extension SKScene: SKPhysicsContactDelegate {
         }
     }
     
+    // #MARK: Custom functions
+    
+    /// Define um bloco a ser executado quando clicar naquele elemento
+    func actionWithElement(touches: Set<NSObject>, name: String?, function: ()->() ) {
+        
+        for  obj in touches {
+            let touch = obj as! UITouch
+            //var touch = touches.first as! UITouch
+            var touchLocation = touch.locationInNode(self)
+            var touchedNode = self.nodeAtPoint(touchLocation)
+            println("'\(touchedNode.name)' tocado")
+            
+            if touchedNode.name == name {
+                if let mainView = view {
+                    function()
+                }
+            }
+        }
+    }
+    
+    
 }
 
 

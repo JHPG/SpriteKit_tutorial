@@ -13,17 +13,15 @@ class GameOverScene: SKScene {
     
     let singleton = Singleton.sharedInstance
     var message: String!
+    var won = false
     
-    init(size: CGSize, won:Bool) {
+    override func didMoveToView(view: SKView) {
         
-        super.init(size: size)
-        
-        // 1
+        self.size = view.bounds.size
         backgroundColor = SKColor.whiteColor()
         
         addRunningBackground("space", filename2: "space")
         
-        // 2
         if won {
             message = " Level \(singleton.level)! "
         } else {
@@ -31,9 +29,6 @@ class GameOverScene: SKScene {
             singleton.level = 1
         }
         
-        //var message = won ? " Level \(singleton.level)! " : "☠ You Lose ☠"
-        
-        // 3
         let label = SKLabelNode(fontNamed: "Chalkduster")
         label.text = message
         label.fontSize = 40
@@ -41,13 +36,12 @@ class GameOverScene: SKScene {
         label.position = CGPoint(x: size.width/2, y: size.height/2)
         addChild(label)
         
-        // 4
         runAction(SKAction.sequence([
             SKAction.waitForDuration(1.3),  //Delay de tela
             SKAction.runBlock() {
-                // 5
+                
                 let reveal = SKTransition.flipHorizontalWithDuration(0.5)
-                let scene = GameScene(size: size)
+                let scene = GameScene(size: self.size)
                 self.view?.presentScene(scene, transition:reveal)
             }
         ]))
@@ -55,8 +49,5 @@ class GameOverScene: SKScene {
         
     }
     
-    // 6
-    required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    
 }
