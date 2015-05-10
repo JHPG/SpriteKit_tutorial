@@ -42,12 +42,14 @@ extension SKScene: SKPhysicsContactDelegate {
         bg1.anchorPoint = CGPointZero
         bg1.position = CGPointMake(0, 0)
         bg1.size = CGSize(width: self.size.width, height: self.size.height)
+        bg1.zPosition = -10
         addChild(bg1)
         
         bg2 = SKSpriteNode(imageNamed: filename2)
         bg2.anchorPoint = CGPointZero;
         bg2.position = CGPointMake(bg1.size.width-1, 0);
         bg2.size = CGSize(width: self.size.width, height: self.size.height)
+        bg2.zPosition = -10
         self.addChild(bg2)
         
         runAction(SKAction.repeatActionForever(
@@ -80,6 +82,7 @@ extension SKScene: SKPhysicsContactDelegate {
             //var touch = touches.first as! UITouch
             var touchLocation = touch.locationInNode(self)
             var touchedNode = self.nodeAtPoint(touchLocation)
+            
             println("'\(touchedNode.name)' tocado")
             
             if touchedNode.name == name {
@@ -92,6 +95,8 @@ extension SKScene: SKPhysicsContactDelegate {
     
     
 }
+
+
 
 
 extension UIColor {

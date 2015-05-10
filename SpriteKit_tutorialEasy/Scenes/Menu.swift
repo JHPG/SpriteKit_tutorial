@@ -16,22 +16,16 @@ class Menu: SKScene {
         super.didMoveToView(view)
         
         playLabel = childNodeWithName("playLabel") as? SKLabelNode
-        println(playLabel?.name)
         
         addRunningBackground("space", filename2: "space")
-        
-        
     }
     
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         
-        println(" aqui")
-        
-        actionWithElement(touches, name: nil) {
+        actionWithElement(touches, name: "playLabel") {
             
-            println("asdasd")
-            let gameScene = GameScene(size: self.size)
+            let gameScene = GameScene()
             let reveal = SKTransition.flipHorizontalWithDuration(1)
             self.view?.presentScene(gameScene, transition: reveal)
             

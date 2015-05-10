@@ -102,8 +102,11 @@ class Player: SKSpriteNode {
             /// Add the shoot amount to the current position
             let realDest = CGPoint(x: self.size.width + shootAmount, y: self.position.y)
             
-            /// Create the actions
-            let actionMove = SKAction.moveTo(realDest, duration: 2.0)
+            /* Create the actions */
+            
+            /// Bullet speed
+            let actionMove = SKAction.moveTo(realDest, duration: 1.5)
+            /// Bullet remove
             let actionMoveDone = SKAction.removeFromParent()
             projectile.runAction(SKAction.sequence([actionMove, actionMoveDone]))
             

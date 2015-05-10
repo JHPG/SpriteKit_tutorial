@@ -27,6 +27,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     //#MARK: Funções padrão
     override func didMoveToView(view: SKView) {
+        self.size = view.bounds.size
         
         backgroundColor = SKColor.whiteColor()
         addRunningBackground("space", filename2: "space")
@@ -144,7 +145,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             var previousLocation = touch.previousLocationInNode(self)
             
             // Get node for player
-            var player = childNodeWithName("player") as! SKSpriteNode   //erro aqui (colisao com inimigo)
+            var player = childNodeWithName("player") as! SKSpriteNode
             
             // Calculate new position along x for paddle
             var playerY = player.position.y + (touchLocation.y - previousLocation.y)
