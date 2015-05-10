@@ -70,9 +70,13 @@ class Player: SKSpriteNode {
         self.physicsBody?.contactTestBitMask = PhysicsCategory.Monster // 4
         self.physicsBody?.collisionBitMask = PhysicsCategory.None // 5
         self.physicsBody?.usesPreciseCollisionDetection = true
+        
+        let exhaust = SKEmitterNode(fileNamed: "exhaust")
+        exhaust.position = CGPoint(x: -(size.width/2)-5, y: 0)
+        addChild(exhaust)
     }
 
-    func shoot(touch: UITouch){
+    func shoot(){
         
         if shootAvaliable {
         // Set up initial location of projectile

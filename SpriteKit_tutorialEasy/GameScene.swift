@@ -130,7 +130,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             singleton.level++
         */
         
-        player.shoot(touches.first as! UITouch)
+        player.shoot()
     }
     
     override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
