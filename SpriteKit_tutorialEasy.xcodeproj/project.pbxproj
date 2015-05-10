@@ -22,7 +22,7 @@
 		D63F435A1AFC311F000885E7 /* Singleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63F43591AFC311F000885E7 /* Singleton.swift */; };
 		D63F435C1AFC3371000885E7 /* laser.png in Resources */ = {isa = PBXBuildFile; fileRef = D63F435B1AFC3371000885E7 /* laser.png */; };
 		D63F435E1AFC3BFC000885E7 /* explosion.png in Resources */ = {isa = PBXBuildFile; fileRef = D63F435D1AFC3BFC000885E7 /* explosion.png */; };
-		D6869D321AFEC96600F4C3B9 /* fires.sks in Resources */ = {isa = PBXBuildFile; fileRef = D6869D301AFEC96600F4C3B9 /* fires.sks */; };
+		D6869D321AFEC96600F4C3B9 /* fire.sks in Resources */ = {isa = PBXBuildFile; fileRef = D6869D301AFEC96600F4C3B9 /* fire.sks */; };
 		D6869D331AFEC96600F4C3B9 /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = D6869D311AFEC96600F4C3B9 /* spark.png */; };
 		D6869D391AFECEB300F4C3B9 /* exhaust.sks in Resources */ = {isa = PBXBuildFile; fileRef = D6869D381AFECEB300F4C3B9 /* exhaust.sks */; };
 		D6D2EA6E1AF7A90B00C1F31E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D2EA6D1AF7A90B00C1F31E /* AppDelegate.swift */; };
@@ -64,7 +64,7 @@
 		D63F43591AFC311F000885E7 /* Singleton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Singleton.swift; sourceTree = "<group>"; };
 		D63F435B1AFC3371000885E7 /* laser.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = laser.png; sourceTree = "<group>"; };
 		D63F435D1AFC3BFC000885E7 /* explosion.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = explosion.png; sourceTree = "<group>"; };
-		D6869D301AFEC96600F4C3B9 /* fires.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = fires.sks; path = Particles/fires.sks; sourceTree = "<group>"; };
+		D6869D301AFEC96600F4C3B9 /* fire.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = fire.sks; path = Particles/fire.sks; sourceTree = "<group>"; };
 		D6869D311AFEC96600F4C3B9 /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = spark.png; path = Particles/spark.png; sourceTree = "<group>"; };
 		D6869D381AFECEB300F4C3B9 /* exhaust.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = exhaust.sks; path = Particles/exhaust.sks; sourceTree = "<group>"; };
 		D6D2EA681AF7A90B00C1F31E /* SpriteKit_tutorialEasy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpriteKit_tutorialEasy.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -139,7 +139,7 @@
 			isa = PBXGroup;
 			children = (
 				D6869D381AFECEB300F4C3B9 /* exhaust.sks */,
-				D6869D301AFEC96600F4C3B9 /* fires.sks */,
+				D6869D301AFEC96600F4C3B9 /* fire.sks */,
 				D6869D311AFEC96600F4C3B9 /* spark.png */,
 			);
 			name = Particles;
@@ -318,7 +318,7 @@
 			files = (
 				D63F43471AFBAC8C000885E7 /* laser.mp3 in Resources */,
 				D6D2EA961AF7AB0A00C1F31E /* background-music-aac.caf in Resources */,
-				D6869D321AFEC96600F4C3B9 /* fires.sks in Resources */,
+				D6869D321AFEC96600F4C3B9 /* fire.sks in Resources */,
 				D63F434D1AFBE89A000885E7 /* bg_sound1.mp3 in Resources */,
 				D615FBD11AFCD80700CB208C /* explosion.mp3 in Resources */,
 				D6D2EA7C1AF7A90B00C1F31E /* LaunchScreen.xib in Resources */,
