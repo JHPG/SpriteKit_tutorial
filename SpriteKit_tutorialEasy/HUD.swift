@@ -46,7 +46,7 @@ class HUD: NSObject {
         levelLabel.position = CGPoint(x: view.size.width/10, y: view.size.height-40)
         parentView.addChild(levelLabel)
         
-        pauseImage.position = CGPoint(x: view.size.width-pauseImage.size.width-10, y: view.size.height-pauseImage.size.height)
+        pauseImage.position = CGPoint(x: view.size.width-30, y: view.size.height-30)
         pauseImage.name = "pause"
         parentView.addChild(pauseImage)
         
@@ -55,7 +55,7 @@ class HUD: NSObject {
     
     
     func atualizarHUD(){
-        enemiesLabel.text = " Inimigos restantes: \(enemiesLeft) "
+        enemiesLabel.text = " Enemies left: \(enemiesLeft) "
         levelLabel.text = " Level \(singleton.level) "
     }
     

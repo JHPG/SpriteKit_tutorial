@@ -83,7 +83,7 @@ extension SKScene: SKPhysicsContactDelegate {
             var touchLocation = touch.locationInNode(self)
             var touchedNode = self.nodeAtPoint(touchLocation)
             
-            println("'\(touchedNode.name)' tocado")
+            if let tName = touchedNode.name { println("'\(tName)' tocado") }
             
             if touchedNode.name == name {
                 if let mainView = view {
@@ -92,6 +92,10 @@ extension SKScene: SKPhysicsContactDelegate {
             }
         }
     }
+    
+
+    
+    
     
     
 }

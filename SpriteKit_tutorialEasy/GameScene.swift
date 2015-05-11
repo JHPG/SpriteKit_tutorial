@@ -44,7 +44,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         runAction(SKAction.repeatActionForever(
             SKAction.sequence( [ SKAction.runBlock {
                 self.addChild(Enemy(view: self))
-            }, SKAction.waitForDuration(1)] )
+            }, SKAction.waitForDuration(0.5)] )
         ))
         
         physicsWorld.gravity = CGVectorMake(0, 0)
@@ -74,7 +74,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if ((firstBody.categoryBitMask & PhysicsCategory.Monster != 0) &&
             (secondBody.categoryBitMask & PhysicsCategory.Projectile != 0)) {
                 
-                enemyDie(firstBody.node as! SKSpriteNode, monster: secondBody.node as! SKSpriteNode)
+                enemyDie(firstBody.node as? SKSpriteNode, monster: secondBody.node as? SKSpriteNode)
                 
         } else if ((firstBody.categoryBitMask & PhysicsCategory.Monster != 0) &&
             (secondBody.categoryBitMask & PhysicsCategory.Player != 0)) {
@@ -85,36 +85,42 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    func enemyDie(projectile:SKSpriteNode, monster:SKSpriteNode) {
+    func enemyDie(projectile:SKSpriteNode?, monster:SKSpriteNode?) {
         
         runAction(SKAction.playSoundFileNamed("explosion.mp3", waitForCompletion: false))
         
-        projectile.removeFromParent()
+        projectile?.removeFromParent()
         
         let explosion:SKSpriteNode = SKSpriteNode(imageNamed: "explosion")
         explosion.name = "explosion"
-        explosion.position = monster.position
-//        addChild(explosion)
-//        SKAction.waitForDuration(0.5)
-//        explosion.removeFromParent()
-
-        let explosionAction = SKAction.sequence( [
-            SKAction.runBlock { self.addChild(explosion) },
-            SKAction.waitForDuration(0.2),
-            SKAction.runBlock { explosion.removeFromParent() }
-        ] )
-        runAction(explosionAction)
         
-        monster.removeFromParent()
-        hud.enemiesLeft--
-        monstersDestroyed++
+        let explosionAction = SKAction.sequence( [
+                SKAction.runBlock { self.addChild(explosion) },
+                SKAction.waitForDuration(0.2),
+                SKAction.runBlock { explosion.removeFromParent() }
+            ] )
+            runAction(explosionAction)
+        
+        if let monsterPosition = monster?.position {
+    //        addChild(explosion)
+    //        SKAction.waitForDuration(0.5)
+    //        explosion.removeFromParent()
+            
+            explosion.position = monsterPosition
+            
+            monster!.removeFromParent()
+            hud.enemiesLeft--
+            monstersDestroyed++
 
-        if (monstersDestroyed >= hud.enemiesLeft) {
-            singleton.level++
-            let reveal = SKTransition.flipHorizontalWithDuration(0.3)
-            let gameOverScene = GameOverScene()
-            gameOverScene.won = true
-            self.view?.presentScene(gameOverScene, transition: reveal)
+            if (monstersDestroyed >= hud.enemiesLeft) {
+                singleton.level++
+                let reveal = SKTransition.flipHorizontalWithDuration(0.3)
+                let gameOverScene = GameOverScene()
+                gameOverScene.won = true
+                self.view?.presentScene(gameOverScene, transition: reveal)
+            }
+        } else {
+            println("Enemy ERROR")  // Não resolvi, mas evita crash do jogo
         }
     }
     
@@ -149,7 +155,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
-        
+        if !gamePaused {
         //if isFingerOnPlayer {
             // Get touch location
             var touch = touches.first as! UITouch
@@ -169,6 +175,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             // Update player position
             player.position = CGPointMake(player.position.x, playerY)
         //}
+        }
     }
     
     override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
