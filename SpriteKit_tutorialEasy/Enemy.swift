@@ -26,6 +26,7 @@ class Enemy: SKSpriteNode {
     
     convenience init(view: SKScene) {
         self.init(imageNamed: "alien-spaceship")
+        self.name = "Enemy"
         
         // physicsBody
         self.physicsBody = SKPhysicsBody(rectangleOfSize: self.size) // 1

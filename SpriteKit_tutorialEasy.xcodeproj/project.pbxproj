@@ -37,6 +37,7 @@
 		D6D2EA961AF7AB0A00C1F31E /* background-music-aac.caf in Resources */ = {isa = PBXBuildFile; fileRef = D6D2EA931AF7AB0A00C1F31E /* background-music-aac.caf */; };
 		D6D2EA971AF7AB0A00C1F31E /* pew-pew-lei.caf in Resources */ = {isa = PBXBuildFile; fileRef = D6D2EA941AF7AB0A00C1F31E /* pew-pew-lei.caf */; };
 		D6D2EA9A1AF7D10600C1F31E /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D2EA991AF7D10600C1F31E /* GameOverScene.swift */; };
+		D6D982A21B00339B00106A60 /* pause.png in Resources */ = {isa = PBXBuildFile; fileRef = D6D982A11B00339B00106A60 /* pause.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +86,7 @@
 		D6D2EA931AF7AB0A00C1F31E /* background-music-aac.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "background-music-aac.caf"; sourceTree = "<group>"; };
 		D6D2EA941AF7AB0A00C1F31E /* pew-pew-lei.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "pew-pew-lei.caf"; sourceTree = "<group>"; };
 		D6D2EA991AF7D10600C1F31E /* GameOverScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
+		D6D982A11B00339B00106A60 /* pause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pause.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +122,7 @@
 		D63F434E1AFBEA4D000885E7 /* Sprites 2 */ = {
 			isa = PBXGroup;
 			children = (
+				D6D982A11B00339B00106A60 /* pause.png */,
 				D63F435D1AFC3BFC000885E7 /* explosion.png */,
 				D63F435B1AFC3371000885E7 /* laser.png */,
 				D63F43551AFBF824000885E7 /* space.png */,
@@ -336,6 +339,7 @@
 				D63F43511AFBEA68000885E7 /* rocket.png in Resources */,
 				D6869D391AFECEB300F4C3B9 /* exhaust.sks in Resources */,
 				D625ED7F1AFEDE0B00E9F40C /* Menu.sks in Resources */,
+				D6D982A21B00339B00106A60 /* pause.png in Resources */,
 				D6869D331AFEC96600F4C3B9 /* spark.png in Resources */,
 				D63F43521AFBEA68000885E7 /* alien-spaceship.png in Resources */,
 				D6D2EA771AF7A90B00C1F31E /* Main.storyboard in Resources */,

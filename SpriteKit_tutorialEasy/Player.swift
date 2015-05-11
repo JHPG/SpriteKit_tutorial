@@ -49,6 +49,7 @@ class Player: SKSpriteNode {
             let projectile = SKSpriteNode(imageNamed: "laser")
             projectile.position = self.position
             projectile.position.x = self.position.x + self.size.width-12
+            projectile.name = "Bullet"
             
             runAction(SKAction.playSoundFileNamed("laser.mp3", waitForCompletion: false))
             

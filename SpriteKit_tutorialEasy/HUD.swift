@@ -26,9 +26,10 @@ class HUD: NSObject {
     
     var parentView: SKScene!
     
-    var enemiesLabel = SKLabelNode(fontNamed: "Chalkduster")
-    var lifeLabel = SKLabelNode(fontNamed: "Chalkduster")
-    var levelLabel = SKLabelNode(fontNamed: "Chalkduster")
+    let enemiesLabel = SKLabelNode(fontNamed: "Chalkduster")
+    let lifeLabel = SKLabelNode(fontNamed: "Chalkduster")
+    let levelLabel = SKLabelNode(fontNamed: "Chalkduster")
+    let pauseImage = SKSpriteNode(imageNamed: "pause")
     
     convenience init(view: SKScene){
         self.init()
@@ -45,7 +46,11 @@ class HUD: NSObject {
         levelLabel.position = CGPoint(x: view.size.width/10, y: view.size.height-40)
         parentView.addChild(levelLabel)
         
-        enemiesLeft = singleton.level * 10      //Adaptar depois (nível de dificuldadeßß)
+        pauseImage.position = CGPoint(x: view.size.width-pauseImage.size.width-10, y: view.size.height-pauseImage.size.height)
+        pauseImage.name = "pause"
+        parentView.addChild(pauseImage)
+        
+        enemiesLeft = singleton.level * 10      //Adaptar depois (nível de dificuldade)
     }
     
     

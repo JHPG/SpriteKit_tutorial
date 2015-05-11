@@ -24,6 +24,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var isFingerOnPlayer = false
     var monstersDestroyed = 0
     let singleton = Singleton.sharedInstance
+    var gamePaused = false
     
     //#MARK: Funções padrão
     override func didMoveToView(view: SKView) {
@@ -132,6 +133,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.view?.presentScene(gameOverScene, transition: reveal)
             singleton.level++
         */
+        
+        actionWithElement(touches, name: "pause"){
+            
+            if self.gamePaused {
+                self.scene!.view!.paused = false
+                self.gamePaused = false
+            } else {
+                self.scene!.view!.paused = true
+                self.gamePaused = true
+            }
+        }
         
         player.shoot()
     }
